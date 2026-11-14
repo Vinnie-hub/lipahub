@@ -1,136 +1,344 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>HotelRate | Review hotels and get paid per approved review</title>
-<meta name="description" content="HotelRate introduces you to Mulaearn, a hotel ratings and reviews platform. Browse hotels, read honest reviews, and share your own. Eligible users can earn a commission per review.">
-<meta name="theme-color" content="#14213d">
-<link rel="icon" type="image/webp" href="assets/favicon-192.webp">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
-<link rel="manifest" href="manifest.json">
-</head>
-<body>
-<header class="header">
-  <div class="wrap bar">
-    <a class="logo" href="#top" aria-label="HotelRate home">
-      <img class="logo-img" src="assets/hotel%20review%20logo.webp" alt="HotelRate" width="150" height="50">
-    </a>
-    <nav class="nav" id="nav" aria-label="Main">
-      <a class="nav-link" href="#how-it-works">How it works</a>
-      <a class="nav-link" href="#hotels">Hotels</a>
-      <button class="btn btn-gold js-register" type="button">Register</button>
-    </nav>
-  </div>
-</header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LipaHub · Earn Online with Hotel Reviews, Chats &amp; Kiswahili Teaching</title>
+    <meta
+      name="description"
+      content="LipaHub connects you to partner earning opportunities — hotel reviews, chatting with foreigners and teaching Kiswahili — plus videos, trivia, articles, spins and referrals. Withdraw via M-Pesa, Airtel Money or MTN Mobile Money."
+    />
+    <meta name="theme-color" content="#0b0f2b" />
+    <meta property="og:title" content="LipaHub · Earn Online" />
+    <meta
+      property="og:description"
+      content="Earn from hotel reviews, chatting with foreigners and teaching Kiswahili. Withdraw via M-Pesa, Airtel Money or MTN Mobile Money."
+    />
+    <meta property="og:image" content="https://lipahub.com/assets/earn-online-with-lipahub.webp" />
+    <meta property="og:url" content="https://lipahub.com" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://lipahub.com" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
 
-<main id="top">
-  <section class="hero">
-    <div class="hero-bg" aria-hidden="true"></div>
-    <div class="wrap hero-grid">
-      <div class="hero-copy">
-        <p class="kicker">Hotel reviews for Kenya</p>
-        <h1>Stay curious. <em>Review the world&rsquo;s finest hotels.</em></h1>
-        <p class="lede">Explore rooms, interiors and dining, then write your review. HotelRate introduces you to Mulaearn, which pays for each approved review.</p>
-        <div class="actions">
-          <button class="btn btn-gold js-register" type="button">Register</button>
-          <a class="btn btn-ghost" href="#hotels">Browse hotels</a>
-        </div>
-        <ul class="terms" aria-label="Key terms">
-          <li><b>KSh 500</b><span>one-time activation fee</span></li>
-          <li><b>7 days</b><span>to request a refund</span></li>
-          <li><b>KSh 200&ndash;800</b><span>per approved review</span></li>
-        </ul>
-      </div>
-      <figure class="hero-art">
-        <img class="hero-img" src="assets/hotelrate-hero.webp" alt="A smiling woman writing a hotel review on her laptop beside a pool, with the HotelRate and Mulaearn logos" width="1672" height="941" fetchpriority="high">
-      </figure>
-    </div>
-  </section>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "LipaHub",
+        "description": "Online earning platform with partner opportunities (hotel reviews, chatting with foreigners, teaching Kiswahili) and activities like videos, trivia, articles, spins and referrals.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "All",
+        "url": "https://lipahub.com"
+      }
+    </script>
 
-  <section class="section" id="hotels">
-    <div class="wrap">
-      <div class="head"><h2>Hotels Ready for Your Review</h2><p>Explore available hotels and start reviewing to earn.</p></div>
-      <div class="grid" id="grid" aria-live="off"></div>
-      <noscript><p class="noscript">Turn on JavaScript to see the sample hotels, or register directly on <a href="https://mulaearn.com/register.php?ref=sydney">Mulaearn</a>.</p></noscript>
-      <div class="rot">
-        <button class="pause" id="pause" type="button" aria-pressed="false" aria-label="Pause automatic hotel rotation">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path class="i-pause" d="M7 5h4v14H7zM13 5h4v14h-4z"/><path class="i-play" d="M8 5v14l11-7z"/></svg>
+    <!-- Apply saved/system theme before paint to avoid a flash -->
+    <script>
+      try {
+        var t = localStorage.getItem("lipahub-theme");
+        if (t === "light" || (!t && window.matchMedia("(prefers-color-scheme: light)").matches)) {
+          document.documentElement.classList.add("light-mode");
+        }
+      } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="bg-gradient" aria-hidden="true"></div>
+    <div class="orb a" aria-hidden="true"></div>
+    <div class="orb b" aria-hidden="true"></div>
+
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+    <header class="site-header" id="siteHeader">
+      <div class="wrap header-bar">
+        <a href="#top" class="logo" aria-label="LipaHub home">
+          <img src="assets/lipahub-logo.png" alt="LipaHub" width="686" height="141" />
+        </a>
+        <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+          <a href="#how">How It Works</a>
+          <a href="#partners">Partners</a>
+          <a href="#more">More Ways</a>
+          <a href="#payouts">Payouts</a>
+          <a href="#faq">FAQ</a>
+          <a class="nav-cta" href="https://lipahub.com/register.php?ref=sydney"><i class="fas fa-user-plus"></i> Join Free</a>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+          <span></span><span></span><span></span>
         </button>
-        <div class="dots" id="dots" role="group" aria-label="Choose a selection"></div>
       </div>
-      <div class="explore"><button class="btn btn-gold js-register" type="button">Register to explore all hotels</button></div>
-    </div>
-  </section>
-<!-- HOW IT WORKS -->
-  <section class="section section-alt" id="how-it-works">
-    <div class="wrap">
-      <div class="head">
-        <h2>How HotelRate works</h2>
-        <p>Three steps from sign-up to your first payout</p>
+    </header>
+
+    <main id="main">
+      <!-- HERO -->
+      <section class="hero" id="top">
+        <div class="wrap hero-grid">
+          <div class="hero-content">
+            <p class="eyebrow"><i class="fas fa-bolt"></i> Online earning platform</p>
+            <h1>Earn online with <span class="grad">real partner opportunities</span></h1>
+            <p class="hero-sub">
+              LipaHub connects you to partner activities — hotel reviews, chatting with foreigners and teaching Kiswahili —
+              plus videos, trivia, articles, spins and referrals. Withdraw to M-Pesa, Airtel Money or MTN Mobile Money.
+            </p>
+            <div class="hero-actions">
+              <a href="https://lipahub.com/register.php?ref=sydney" class="btn btn-solid"><i class="fas fa-rocket"></i> Get Started</a>
+              <a href="https://chat.whatsapp.com/JLkHPueGz1zLXQe0KwTLYg" class="btn btn-outline" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Join Community</a>
+            </div>
+            <ul class="hero-points">
+              <li><i class="fas fa-check-circle"></i> Free to register</li>
+              <li><i class="fas fa-check-circle"></i> Mobile money payouts</li>
+              <li><i class="fas fa-check-circle"></i> Available in 16 countries</li>
+            </ul>
+          </div>
+          <div class="hero-media">
+            <picture>
+              <source srcset="assets/earn-online-with-lipahub.webp" type="image/webp" />
+              <img src="assets/earn-online-with-lipahub.png" alt="Smiling woman using LipaHub on her phone, with Review Hotels, Chat with Foreigners and Teach Kiswahili options" width="1400" height="700" fetchpriority="high" />
+            </picture>
+          </div>
+        </div>
+      </section>
+
+      <!-- TICKER -->
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker-track">
+          <span><i class="fas fa-hotel"></i> Hotel Reviews</span>
+          <span><i class="fas fa-comments"></i> Chat with Foreigners</span>
+          <span><i class="fas fa-language"></i> Teach Kiswahili</span>
+          <span><i class="fas fa-video"></i> Watch Videos</span>
+          <span><i class="fas fa-lightbulb"></i> Trivia</span>
+          <span><i class="fas fa-pen-nib"></i> Write Articles</span>
+          <span><i class="fas fa-dharmachakra"></i> Spin &amp; Win</span>
+          <span><i class="fas fa-user-group"></i> Referrals</span>
+          <span><i class="fas fa-hotel"></i> Hotel Reviews</span>
+          <span><i class="fas fa-comments"></i> Chat with Foreigners</span>
+          <span><i class="fas fa-language"></i> Teach Kiswahili</span>
+          <span><i class="fas fa-video"></i> Watch Videos</span>
+          <span><i class="fas fa-lightbulb"></i> Trivia</span>
+          <span><i class="fas fa-pen-nib"></i> Write Articles</span>
+          <span><i class="fas fa-dharmachakra"></i> Spin &amp; Win</span>
+          <span><i class="fas fa-user-group"></i> Referrals</span>
+        </div>
       </div>
-      <ol class="steps">
-        <li class="step">
-          <span class="step-no" aria-hidden="true">1</span>
-          <h3>Create your account</h3>
-          <p>Sign up on Mulaearn with your username, phone number and email, then pay the activation fee.</p>
-          <p class="step-note">KSh 500, refundable within 7 days</p>
-        </li>
-        <li class="step">
-          <span class="step-no" aria-hidden="true">2</span>
-          <h3>Browse hotels</h3>
-          <p>Look through the hotels on offer and see what each one involves before you pick.</p>
-          <p class="step-note">Pay shown on every listing</p>
-        </li>
-        <li class="step">
-          <span class="step-no" aria-hidden="true">3</span>
-          <h3>Review and earn</h3>
-          <p>Write your reviews honestly. Each approved review earns KSh 200 to 800, withdrawn to M&#8209;Pesa.</p>
-          <p class="step-note">Paid per approved review</p>
-        </li>
-      </ol>
-    </div>
-  </section>
-</main>
 
-<footer class="footer"><div class="wrap foot">
-  <span>&copy; <span id="year"></span> HotelRate. All rights reserved.</span>
-</div></footer>
+      <!-- HOW IT WORKS -->
+      <section class="section" id="how">
+        <div class="wrap">
+          <header class="section-head center reveal">
+            <p class="eyebrow"><i class="fas fa-route"></i> Simple process</p>
+            <h2>How it works</h2>
+            <p class="lead">Four steps from sign-up to payout.</p>
+          </header>
+          <ol class="steps-grid">
+            <li class="step-card reveal">
+              <div class="step-number">1</div>
+              <h3>Register free</h3>
+              <p>Create your account with a username, phone number and email.</p>
+            </li>
+            <li class="step-card reveal">
+              <div class="step-number">2</div>
+              <h3>Activate your account</h3>
+              <p>Pay the one-time activation fee (<strong>$5</strong>, in your own currency) to unlock every earning activity.</p>
+            </li>
+            <li class="step-card reveal">
+              <div class="step-number">3</div>
+              <h3>Pick an activity</h3>
+              <p>Start with a partner opportunity, or mix in videos, trivia, articles, spins and referrals.</p>
+            </li>
+            <li class="step-card reveal">
+              <div class="step-number">4</div>
+              <h3>Withdraw earnings</h3>
+              <p>Cash out through M-Pesa, Airtel Money or MTN Mobile Money, depending on your country.</p>
+            </li>
+          </ol>
+          <div class="bonus-highlight reveal">
+            <i class="fas fa-gift"></i>
+            <p><span>50% welcome bonus.</span> New members get cashback on the activation fee, so you start with extra balance.</p>
+            <a href="https://lipahub.com/register.php?ref=sydney" class="btn btn-solid btn-sm">Claim it <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </section>
 
-<div class="fab-stack">
-  <div class="install-tip" id="installTip" role="status" hidden>
-    <b>Install HotelRate</b>
-    <span>Tap the Share button in Safari, then choose &ldquo;Add to Home Screen&rdquo;.</span>
-  </div>
-  <button class="install-btn" id="installBtn" type="button" hidden>
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 20h14"/></svg>
-    Install app
-  </button>
-  <div class="float-wa-container">
-    <span class="float-wa-label" id="wa-label">Join WhatsApp Community</span>
-    <a class="commBtn float" href="https://chat.whatsapp.com/Ir5lbHCr9rPCLuvVzvHAyD" target="_blank" rel="noopener noreferrer" aria-label="Join our WhatsApp community" aria-describedby="wa-label"></a>
-  </div>
-</div>
+      <!-- PARTNER OPPORTUNITIES -->
+      <section class="section invert" id="partners">
+        <div class="wrap">
+          <header class="section-head center reveal">
+            <p class="eyebrow"><i class="fas fa-handshake"></i> Primary ways to earn</p>
+            <h2>Partner opportunities</h2>
+            <p class="lead">Work with our partners on activities that make up the core of what you can earn on LipaHub.</p>
+          </header>
+          <div class="partner-grid">
+            <article class="partner-card reveal">
+              <span class="partner-icon gold"><i class="fas fa-hotel"></i></span>
+              <h3>Hotel reviews</h3>
+              <p>Explore hotels, research their facilities and guest experiences, and get rewarded for every approved review.</p>
+              <a href="https://lipahub.com/register.php?ref=sydney" class="btn btn-solid btn-sm"><i class="fas fa-star"></i> Review hotels</a>
+            </article>
+            <article class="partner-card reveal">
+              <span class="partner-icon purple"><i class="fas fa-comments"></i></span>
+              <h3>Chat with foreigners</h3> 
+              <p>Hold friendly conversations with people from around the world and earn for the time you spend chatting.</p>
+              <a href="https://lipahub.com/register.php?ref=sydney" class="btn btn-solid btn-sm"><i class="fas fa-comment-dots"></i> Start chatting</a>
+            </article>
+            <article class="partner-card reveal">
+              <span class="partner-icon green"><i class="fas fa-graduation-cap"></i></span>
+              <h3>Teach Kiswahili</h3>
+              <p>Share your language with learners worldwide and get paid for helping them speak Kiswahili.</p>
+              <a href="https://lipahub.com/register.php?ref=sydney" class="btn btn-solid btn-sm"><i class="fas fa-chalkboard-teacher"></i> Start teaching</a>
+            </article>
+          </div>
+        </div>
+      </section>
 
-<div class="modal-back" id="modal" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
-    <button class="close" id="close" type="button" aria-label="Close">&times;</button>
-    <h2 id="mTitle">Registration process</h2>
-    <p class="mlead" id="mHotel"></p>
-    <ol class="regsteps compact" id="mSteps"></ol>
-    <a class="btn btn-gold block" href="https://mulaearn.com/register.php?ref=sydney" target="_blank" rel="noopener">Continue to Register</a>
-  </div>
-</div>
-<script src="js/data.js"></script>
-<script src="js/app.js"></script>
-<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
-  }
-</script>
-</body>
+      <!-- MORE WAYS -->
+      <section class="section" id="more">
+        <div class="wrap">
+          <header class="section-head center reveal">
+            <p class="eyebrow"><i class="fas fa-layer-group"></i> Extra income</p>
+            <h2>More ways to earn</h2>
+            <p class="lead">Quick activities you can do any time to top up your balance.</p>
+          </header>
+          <div class="earn-grid">
+            <article class="earn-card reveal">
+              <div class="earn-card-header"><i class="fas fa-video"></i><h3>Watch videos</h3></div>
+              <p>Watch videos and earn for your viewing time.</p>
+              <a href="https://lipahub.com/register.php?ref=sydney" class="btn btn-sm btn-outline"><i class="fas fa-play-circle"></i> Watch</a>
+            </article>
+            <article class="earn-card reveal">
+              <div class="earn-card-header"><i class="fas fa-lightbulb"></i><h3>Trivia questions</h3></div>
+              <p>Answer trivia questions correctly and collect rewards.</p>
+              <a href="https://lipahub.com/register.php?ref=sydney" class="btn btn-sm btn-outline"><i class="fas fa-circle-question"></i> Play trivia</a>
+            </article>
+            <article class="earn-card reveal">
+              <div class="earn-card-header"><i class="fas fa-pen-nib"></i><h3>Write articles</h3></div>
+              <p>Turn your knowledge into articles and get rewarded for your writing.</p>
+              <a href="https://lipahub.com/register.php?ref=sydney" class="btn btn-sm btn-outline"><i class="fas fa-pen"></i> Start writing</a>
+            </article>
+            <article class="earn-card reveal">
+              <div class="earn-card-header"><i class="fas fa-dharmachakra"></i><h3>Spin &amp; win</h3></div>
+              <p>Spin the wheel for bonus rewards and surprise earnings.</p>
+              <a href="https://lipahub.com/register.php?ref=sydney" class="btn btn-sm btn-outline"><i class="fas fa-rotate"></i> Spin now</a>
+            </article>
+            <article class="earn-card reveal">
+              <div class="earn-card-header"><i class="fas fa-user-group"></i><h3>Refer friends</h3></div>
+              <p>Invite friends to LipaHub and earn when they join.</p>
+              <a href="https://lipahub.com/register.php?ref=sydney" class="btn btn-sm btn-outline"><i class="fas fa-link"></i> Invite friends</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHY -->
+      <section class="section invert" id="why">
+        <div class="wrap media-grid">
+          <div class="reveal">
+            <p class="eyebrow"><i class="fas fa-shield-heart"></i> Why LipaHub</p>
+            <h2>Everything you need to start earning.</h2>
+            <ul class="feature-list">
+              <li><i class="fas fa-coins"></i><div><h3>Multiple earning options</h3><p>Tasks for every skill and every amount of free time.</p></div></li>
+              <li><i class="fas fa-mobile-screen"></i><div><h3>Local mobile money</h3><p>Get paid via M-Pesa, Airtel Money or MTN Mobile Money.</p></div></li>
+              <li><i class="fas fa-earth-africa"></i><div><h3>Built for Africa</h3><p>Available across 16 countries.</p></div></li>
+              <li><i class="fas fa-people-group"></i><div><h3>Supportive community</h3><p>Join our WhatsApp community and grow together.</p></div></li>
+            </ul>
+          </div>
+          <div class="media-img reveal">
+            <img src="assets/why-join-lipahub.webp" alt="Why join LipaHub: multiple earning options, safe and trusted, fast payments and a supportive community" loading="lazy" width="1400" height="788" />
+          </div>
+        </div>
+      </section>
+
+      <!-- PAYOUTS -->
+      <section class="section" id="payouts">
+        <div class="wrap">
+          <header class="section-head center reveal">
+            <p class="eyebrow"><i class="fas fa-wallet"></i> Withdrawals</p>
+            <h2>Get paid the way you already transact</h2>
+            <p class="lead">Select a payment method to see the countries where it is available, or tap a country to see its options.</p>
+          </header>
+
+          <div class="method-tabs reveal" role="tablist" aria-label="Payment methods" id="methodTabs">
+            <button role="tab" class="method-tab active" data-method="all" aria-selected="true">All</button>
+            <button role="tab" class="method-tab" data-method="mpesa" aria-selected="false"><i class="fas fa-mobile-screen-button"></i> M-Pesa</button>
+            <button role="tab" class="method-tab" data-method="airtel" aria-selected="false"><i class="fas fa-mobile-screen-button"></i> Airtel Money</button>
+            <button role="tab" class="method-tab" data-method="mtn" aria-selected="false"><i class="fas fa-mobile-screen-button"></i> MTN Mobile Money</button>
+          </div>
+
+          <div class="countries-wrap reveal" id="countries"></div>
+          <p class="country-info" id="countryInfo" aria-live="polite">Select a country to see how you can withdraw.</p>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section invert" id="faq">
+        <div class="wrap narrow">
+          <header class="section-head center reveal">
+            <p class="eyebrow"><i class="fas fa-circle-question"></i> FAQ</p>
+            <h2>Clear answers for you</h2>
+          </header>
+          <div class="accordion reveal" id="accordion">
+            <details><summary>How do I join? <i class="fas fa-chevron-down"></i></summary><p>Click “Get Started”, fill in your details and register. Then activate your account to unlock all earning activities.</p></details>
+            <details><summary>Is there a fee? <i class="fas fa-chevron-down"></i></summary><p>Registration is free. A one-time activation fee of $5 (in your own currency) unlocks all earning activities, and new members receive a 50% cashback welcome bonus.</p></details>
+            <details><summary>How do I earn money? <i class="fas fa-chevron-down"></i></summary><p>Your main earnings come from partner opportunities: hotel reviews, chatting with foreigners and teaching Kiswahili. You can add to them by watching videos, answering trivia, writing articles, spinning for rewards and referring friends.</p></details>
+            <details><summary>How do I withdraw? <i class="fas fa-chevron-down"></i></summary><p>Request a withdrawal from your account. You can be paid through M-Pesa, Airtel Money or MTN Mobile Money, depending on your country.</p></details>
+            <details><summary>Where can I get help? <i class="fas fa-chevron-down"></i></summary><p>Message us on <a href="https://wa.me/254729743223" target="_blank" rel="noopener">WhatsApp</a> or email <a href="mailto:lipahub@gmail.com">lipahub@gmail.com</a>.</p></details>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <div class="wrap">
+          <div class="cta-card reveal">
+            <p class="eyebrow"><i class="fas fa-gem"></i> Start today</p>
+            <h2>Ready to start earning?</h2>
+            <p class="lead">Create your free account and pick your first activity in minutes.</p>
+            <a href="https://lipahub.com/register.php?ref=sydney" class="btn btn-solid btn-lg"><i class="fas fa-arrow-right-to-bracket"></i> Register now</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-grid">
+        <div class="footer-brand">
+          <a href="#top" class="logo" aria-label="LipaHub home"><img src="assets/lipahub-logo.png" alt="LipaHub" width="686" height="141" loading="lazy" /></a>
+          <p>Earn online through partner opportunities, daily activities and referrals.</p>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <a href="#how">How it works</a>
+          <a href="#partners">Partner opportunities</a>
+          <a href="#more">More ways to earn</a>
+          <a href="#payouts">Payouts</a>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <a href="https://wa.me/254729743223" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+          <a href="mailto:lipahub@gmail.com"><i class="fas fa-envelope"></i> lipahub@gmail.com</a>
+          <a href="https://chat.whatsapp.com/JLkHPueGz1zLXQe0KwTLYg" target="_blank" rel="noopener"><i class="fas fa-users"></i> Community group</a>
+        </div>
+      </div>
+      <div class="wrap footer-bottom">&copy; <span id="year">2026</span> LipaHub · Learn · Earn · Grow</div>
+    </footer>
+
+    <a class="whatsapp-fab" href="https://wa.me/254729743223?text=Hello%20LipaHub%20team" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    <button class="to-top" id="toTop" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+    <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode"><i class="fas fa-moon"></i></button>
+
+    <script src="script.js"></script>
+  </body>
 </html>
