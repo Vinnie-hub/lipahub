@@ -33,20 +33,18 @@
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeNav(); });
   $$('a[href^="#"]', nav).forEach(function (a) { a.addEventListener("click", closeNav); });
 
-  /* ---------- Header shadow, progress bar, back-to-top ---------- */
-  var header = $("#siteHeader"), bar = $("#scrollProgress"), toTop = $("#toTop"), ticking = false;
+  /* ---------- Header shadow & progress bar ---------- */
+  var header = $("#siteHeader"), bar = $("#scrollProgress"), ticking = false;
   function onScroll() {
     var y = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
     header.classList.toggle("scrolled", y > 10);
     bar.style.width = (h > 0 ? (y / h) * 100 : 0) + "%";
-    toTop.classList.toggle("show", y > 700);
     ticking = false;
   }
   window.addEventListener("scroll", function () {
     if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
   }, { passive: true });
   onScroll();
-  toTop.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
 
   /* ---------- Active nav link ---------- */
   var links = $$('.main-nav a[href^="#"]:not(.nav-cta)');
@@ -82,70 +80,102 @@
     });
   });
 
-  /* ---------- Payout explorer ----------
-     EDIT THIS LIST to match your real payout coverage.
-     Method keys: mpesa, airtel, mtn. An empty list shows "contact support". */
-  var METHODS = { mpesa: "M-Pesa", airtel: "Airtel Money", mtn: "MTN Mobile Money" };
+  /* ---------- Countries ----------
+     EDIT THIS LIST to match your real data.
+     fee = activation fee = minimum withdrawal. Method keys: mpesa, airtel, mtn.
+     The first methods are the common local default for that country. */
+  var METHODS = { mpesa: "M-Pesa", airtel: "Airtel Money", mtn: "MTN MoMo",
+    orange: "Orange Money", wave: "Wave", ecocash: "EcoCash", lumicash: "Lumicash", bank: "Bank transfer", momo: "Local mobile money" };
+  var MAIN = ["mpesa", "airtel", "mtn"];
   var COUNTRIES = [
-    { name: "Kenya", methods: ["mpesa", "airtel"] },
-    { name: "Uganda", methods: ["mtn", "airtel"] },
-    { name: "Tanzania", methods: ["mpesa", "airtel"] },
-    { name: "Rwanda", methods: ["mtn", "airtel"] },
-    { name: "Burundi", methods: [] },
-    { name: "Malawi", methods: ["airtel"] },
-    { name: "Cameroon", methods: ["mtn"] },
-    { name: "Nigeria", methods: ["mtn", "airtel"] },
-    { name: "Ghana", methods: ["mtn"] },
-    { name: "DR Congo", methods: ["mpesa", "airtel"] },
-    { name: "Mozambique", methods: ["mpesa"] },
-    { name: "Botswana", methods: [] },
-    { name: "South Sudan", methods: ["mtn"] },
-    { name: "Zambia", methods: ["mtn", "airtel"] },
-    { name: "Zimbabwe", methods: [] },
-    { name: "South Africa", methods: [] }
+    { name: "Kenya", code: "ke", fee: "KSH 550", methods: ["mpesa", "airtel"] },
+    { name: "Uganda", code: "ug", fee: "UGX 18,500", methods: ["mtn", "airtel"] },
+    { name: "Tanzania", code: "tz", fee: "TSH 11,000", methods: ["mpesa", "airtel"] },
+    { name: "Rwanda", code: "rw", fee: "RF 7,000", methods: ["mtn", "airtel"] },
+    { name: "Nigeria", code: "ng", fee: "NGN 8,000", methods: ["mtn", "airtel"] },
+    { name: "Malawi", code: "mw", fee: "MWK 26,000", methods: ["airtel"] },
+    { name: "Zambia", code: "zm", fee: "ZK 110", methods: ["mtn", "airtel"] },
+    { name: "Ghana", code: "gh", fee: "GHC 85", methods: ["mtn"] },
+    { name: "Cameroon", code: "cm", fee: "XAF 3,500", methods: ["mtn"] },
+    { name: "Botswana", code: "bw", fee: "BWP 90", methods: ["orange"] },
+    { name: "Burundi", code: "bi", fee: "FBu 25,000", methods: ["lumicash", "ecocash"] },
+    { name: "Zimbabwe", code: "zw", fee: "ZWD 2,500", methods: ["ecocash"] },
+    { name: "Mozambique", code: "mz", fee: "MZN 300", methods: ["mpesa"] },
+    { name: "South Africa", code: "za", fee: "ZAR 70", methods: ["bank"] },
+    { name: "DR Congo", code: "cd", fee: "CDF 12,500", methods: ["mpesa", "airtel"] },
+    { name: "South Sudan", code: "ss", fee: "SSP 20,000", methods: ["mtn"] },
+    { name: "Senegal", code: "sn", fee: "XOF 3,500", methods: ["orange", "wave"] },
+    { name: "Burkina Faso", code: "bf", fee: "XOF 3,500", methods: ["orange"] },
+    { name: "Other countries", code: "", fee: "USD 5", methods: ["momo"], other: true }
   ];
 
-  var wrap = $("#countries"), info = $("#countryInfo"), tabs = $$(".method-tab");
-  var currentMethod = "all", selected = null;
+  var grid = $("#countryGrid"), empty = $("#emptyNote"), search = $("#countrySearch");
+  var tabs = $$(".method-tab"), method = "all";
 
-  COUNTRIES.forEach(function (c) {
-    var b = document.createElement("button");
-    b.type = "button"; b.className = "country-pill"; b.textContent = c.name;
-    b.addEventListener("click", function () { selected = c; render(); });
-    c.el = b; wrap.appendChild(b);
-  });
-
-  function names(list) { return list.map(function (m) { return METHODS[m]; }); }
-  function join(a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
-
-  function render() {
-    COUNTRIES.forEach(function (c) {
-      var match = currentMethod === "all" || c.methods.indexOf(currentMethod) > -1;
-      c.el.classList.toggle("dim", !match);
-      c.el.classList.toggle("selected", selected === c);
-    });
-    if (selected) {
-      info.innerHTML = selected.methods.length
-        ? "<strong>" + selected.name + ":</strong> withdraw via " + join(names(selected.methods)) + "."
-        : "<strong>" + selected.name + ":</strong> please <a href=\"https://wa.me/254729743223\" target=\"_blank\" rel=\"noopener\">contact support</a> for withdrawal options.";
-    } else if (currentMethod !== "all") {
-      var n = COUNTRIES.filter(function (c) { return c.methods.indexOf(currentMethod) > -1; }).length;
-      info.innerHTML = "<strong>" + METHODS[currentMethod] + "</strong> is available in " + n + " of our " + COUNTRIES.length + " countries.";
-    } else {
-      info.textContent = "Select a country to see how you can withdraw.";
-    }
+  function card(c) {
+    var chips = c.methods.map(function (m) {
+      var cls = MAIN.indexOf(m) > -1 ? m : "local";
+      return '<span class="chip ' + cls + '">' + METHODS[m] + "</span>";
+    }).join("");
+    var flag = c.code
+      ? '<img class="cc-flag" src="https://flagcdn.com/w80/' + c.code + '.png" alt="" width="36" height="26" loading="lazy" onerror="this.style.visibility=\'hidden\'">'
+      : '<span class="cc-globe" aria-hidden="true">\uD83C\uDF0D</span>';
+    return '<article class="country-card"><div class="cc-head">' + flag + '<span class="cc-name">' + c.name + "</span>" +
+      '<span class="cc-amount" title="Activation fee and minimum withdrawal">' + c.fee + "</span></div>" +
+      '<div class="cc-methods">' + chips + "</div></article>";
   }
 
+  function render() {
+    var q = search.value.trim().toLowerCase();
+    var list = COUNTRIES.filter(function (c) {
+      var okName = !q || c.name.toLowerCase().indexOf(q) > -1;
+      var okM = method === "all" ||
+        (method === "local" ? c.methods.some(function (m) { return MAIN.indexOf(m) < 0; }) : c.methods.indexOf(method) > -1);
+      return okName && okM;
+    });
+    grid.innerHTML = list.map(card).join("");
+    empty.hidden = list.length > 0;
+  }
+
+  search.addEventListener("input", render);
   tabs.forEach(function (t) {
     t.addEventListener("click", function () {
-      currentMethod = t.dataset.method; selected = null;
+      method = t.dataset.method;
       tabs.forEach(function (o) {
-        var on = o === t; o.classList.toggle("active", on); o.setAttribute("aria-selected", String(on));
+        var on = o === t; o.classList.toggle("active", on); o.setAttribute("aria-pressed", String(on));
       });
       render();
     });
   });
   render();
+
+  /* ---------- Install app (PWA) ---------- */
+  var installBtn = $("#installBtn"), hint = $("#installHint"), deferred = null;
+  var standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+  function hideInstall() { installBtn.hidden = true; hint.hidden = true; }
+
+  if (standalone) { hideInstall(); }
+  else {
+    if (isIOS) installBtn.hidden = false;
+    window.addEventListener("beforeinstallprompt", function (e) {
+      e.preventDefault(); deferred = e; installBtn.hidden = false;
+    });
+  }
+  installBtn.addEventListener("click", function () {
+    if (deferred) {
+      deferred.prompt();
+      deferred.userChoice.then(function (r) { if (r.outcome === "accepted") hideInstall(); deferred = null; });
+    } else if (isIOS) { hint.hidden = !hint.hidden; }
+  });
+  $("#hintClose").addEventListener("click", function () { hint.hidden = true; });
+  window.addEventListener("appinstalled", hideInstall);
+  window.matchMedia("(display-mode: standalone)").addEventListener &&
+    window.matchMedia("(display-mode: standalone)").addEventListener("change", function (e) { if (e.matches) hideInstall(); });
+
+  if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+    window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+  }
 
   var y = $("#year"); if (y) y.textContent = new Date().getFullYear();
 })();

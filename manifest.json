@@ -2,6 +2,7 @@
   "name": "LipaHub",
   "short_name": "LipaHub",
   "description": "Earn online through partner opportunities — hotel reviews, chatting with foreigners and teaching Kiswahili — plus videos, trivia, articles, spins and referrals.",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
