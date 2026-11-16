@@ -3,6 +3,29 @@
   var root = document.documentElement;
   root.classList.add("js");
 
+  /* ---------- Referral capture ----------
+     Priority: ?ref= in the URL  >  last saved ref  >  "sydney".
+     Every registration link is rewritten to carry the captured username. */
+  (function () {
+    var DEFAULT_REF = "sydney", KEY = "lipahub-ref";
+    function clean(v) { v = String(v || "").trim().replace(/^@+/, ""); return /^[A-Za-z0-9._-]{1,40}$/.test(v) ? v : ""; }
+    var ref = "";
+    try { ref = clean(new URLSearchParams(window.location.search).get("ref")); } catch (e) {}
+    try {
+      if (ref) localStorage.setItem(KEY, ref);
+      else ref = clean(localStorage.getItem(KEY));
+    } catch (e) {}
+    if (!ref) ref = DEFAULT_REF;
+    var links = document.querySelectorAll('a[href^="https://lipahub.com/register.php"]');
+    for (var i = 0; i < links.length; i++) {
+      try {
+        var u = new URL(links[i].getAttribute("href"));
+        u.searchParams.set("ref", ref);
+        links[i].setAttribute("href", u.toString());
+      } catch (e) {}
+    }
+  })();
+
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
 

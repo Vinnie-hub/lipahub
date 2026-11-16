@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Referral Link Generator · LipaHub Team Tools</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0b0f2b" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <script>
+      try {
+        var t = localStorage.getItem("lipahub-theme");
+        if (t === "light" || (!t && window.matchMedia("(prefers-color-scheme: light)").matches)) {
+          document.documentElement.classList.add("light-mode");
+        }
+      } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/tools.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="bg-gradient" aria-hidden="true"></div>
+    <div class="orb a" aria-hidden="true"></div>
+    <div class="orb b" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="wrap header-bar">
+        <a href="/" class="logo" aria-label="LipaHub home">
+          <img src="/assets/lipahub-logo.webp" alt="LipaHub" width="686" height="141" />
+        </a>
+        <div class="header-tools">
+          <a class="back-link" href="/"><i class="fas fa-arrow-left"></i> Website</a>
+          <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode"><i class="fas fa-moon"></i></button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="tools-main">
+      <div class="wrap">
+        <section class="tools-card" aria-labelledby="toolTitle">
+          <p class="eyebrow"><i class="fas fa-link"></i> Team tools</p>
+          <h1 id="toolTitle">Referral Link Generator</h1>
+          <p class="lead">Enter your LipaHub referral username to get your personal marketing link. Anyone who registers through it is credited to you.</p>
+
+          <label class="field-label" for="refInput">Your referral username</label>
+          <div class="field-wrap">
+            <i class="fas fa-user" aria-hidden="true"></i>
+            <input class="field" id="refInput" type="text" inputmode="text" autocomplete="off" autocapitalize="none"
+                   autocorrect="off" spellcheck="false" maxlength="40" placeholder="e.g. sydney" aria-describedby="refHint" />
+          </div>
+          <p class="field-hint" id="refHint" role="status" aria-live="polite"></p>
+
+          <div class="result">
+            <p class="result-label">Your marketing link</p>
+            <div class="link-box is-empty" id="linkBox" aria-live="polite">Enter your username above to generate your link</div>
+            <div class="actions">
+              <button class="btn btn-solid" id="copyBtn" type="button" disabled><i class="fas fa-copy"></i> Copy Link</button>
+              <a class="btn btn-wa is-disabled" id="waBtn" aria-disabled="true"><i class="fab fa-whatsapp"></i> Share on WhatsApp</a>
+            </div>
+            <p class="copy-status" id="copyStatus" role="status" aria-live="polite"></p>
+          </div>
+
+          <p class="tools-note">
+            When someone opens your link, the website remembers your username and sends every
+            registration button to <code>lipahub.com/register.php?ref=your-username</code>.
+          </p>
+        </section>
+      </div>
+    </main>
+
+    <div class="tools-footer">&copy; <span id="year">2026</span> LipaHub · Learn · Earn · Grow</div>
+    <script src="/tools.js"></script>
+  </body>
+</html>
