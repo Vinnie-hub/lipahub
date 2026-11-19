@@ -3,9 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Referral Link Generator · LipaHub Team Tools</title>
+    <title>Lipahub Marketing Link Generator · Free Lipahub Tool</title>
     <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#0b0f2b" />
+    <meta name="description" content="Create your personalized LipaHub marketing link in seconds." />
+    <meta property="og:title" content="Lipahub Marketing Link Generator" />
+    <meta property="og:description" content="Create your personalized marketing link in seconds." />
+    <meta property="og:image" content="https://lipahub.vercel.app/assets/lipahub-og.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://lipahub.vercel.app/tools" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LipaHub" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Lipahub Marketing Link Generator" />
+    <meta name="twitter:description" content="Create your personalized marketing link in seconds." />
+    <meta name="twitter:image" content="https://lipahub.vercel.app/assets/lipahub-og.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -50,8 +64,9 @@
     <main id="main" class="tools-main">
       <div class="wrap">
         <section class="tools-card" aria-labelledby="toolTitle">
-          <p class="eyebrow"><i class="fas fa-link"></i> Team tools</p>
-          <h1 id="toolTitle">Referral Link Generator</h1>
+          <p class="eyebrow"><i class="fas fa-link"></i> Free Lipahub Tool</p>
+          <h1 id="toolTitle">Lipahub Marketing Link Generator</h1>
+          <p class="tagline">Create your personalized marketing link in seconds.</p>
           <p class="lead">Enter your LipaHub referral username to get your personal marketing link. Anyone who registers through it is credited to you.</p>
 
           <label class="field-label" for="refInput">Your referral username</label>
@@ -80,7 +95,33 @@
       </div>
     </main>
 
+    <div class="assist-modal" id="assistModal" role="dialog" aria-modal="true" aria-labelledby="assistModalTitle" hidden>
+      <div class="assist-backdrop" data-close></div>
+      <div class="assist-sheet">
+        <button class="assist-close" type="button" aria-label="Close" data-close><i class="fas fa-xmark"></i></button>
+        <h3 id="assistModalTitle">How can I help you?</h3>
+        <p class="assist-sub">Choose an option to open WhatsApp.</p>
+        <div class="assist-options">
+          <a class="assist-option" data-service="guidance" target="_blank" rel="noopener"><i class="fas fa-compass"></i><span>Lipahub Guidance</span><i class="fas fa-chevron-right chev"></i></a>
+          <a class="assist-option" data-service="website" target="_blank" rel="noopener"><i class="fas fa-code"></i><span>Website Development</span><i class="fas fa-chevron-right chev"></i></a>
+          <a class="assist-option" data-service="support" target="_blank" rel="noopener"><i class="fas fa-headset"></i><span>General Support</span><i class="fas fa-chevron-right chev"></i></a>
+        </div>
+      </div>
+    </div>
+
     <div class="tools-footer">&copy; <span id="year">2026</span> LipaHub · Learn · Earn · Grow</div>
+
+    <div class="float-wa-container tools-fab" id="assistFab">
+      <div class="fab-preview" id="assistPreview" role="group" aria-label="Personal assistance">
+        <button class="fab-preview-close" id="assistPreviewClose" type="button" aria-label="Close preview">&times;</button>
+        <button class="fab-preview-body" id="assistPreviewBody" type="button" aria-haspopup="dialog" aria-controls="assistModal">
+          <strong>Need Personal Assistance?</strong>
+          <span>Chat with me on WhatsApp for guidance, support or website development inquiries.</span>
+        </button>
+      </div>
+      <button class="channelBtn float" id="assistBtn" type="button" aria-haspopup="dialog" aria-controls="assistModal"
+              aria-label="Chat on WhatsApp: choose a topic"></button>
+    </div>
     <script src="/tools.js"></script>
   </body>
 </html>

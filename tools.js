@@ -87,6 +87,41 @@
     waBtn.target = "_blank"; waBtn.rel = "noopener";
   });
 
+  /* WhatsApp assistance */
+  var WA_NUMBER = "254707995729";
+  var WA_MESSAGES = {
+    website:
+      "Hello, I'm interested in website development services and would like to discuss my project.",
+    guidance:
+      "Hello, I would like to know how to use my Lipahub marketing link.",
+    support: "Hello, I need some assistance. Could you please help me?",
+  };
+  var assistBtn = $("#assistBtn"), modal = $("#assistModal");
+  var options = modal.querySelectorAll(".assist-option");
+  Array.prototype.forEach.call(options, function (a) {
+    a.href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(WA_MESSAGES[a.getAttribute("data-service")]);
+    a.addEventListener("click", function () { setTimeout(closeModal, 150); });
+  });
+  function openModal() {
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+    options[0].focus();
+  }
+  function closeModal() {
+    if (modal.hidden) return;
+    modal.hidden = true;
+    document.body.style.overflow = "";
+    assistBtn.focus();
+  }
+  assistBtn.addEventListener("click", openModal);
+
+  /* Always-visible preview next to the button; the X hides it for this visit */
+  var preview = $("#assistPreview");
+  $("#assistPreviewBody").addEventListener("click", openModal);
+  $("#assistPreviewClose").addEventListener("click", function () { preview.hidden = true; assistBtn.focus(); });
+  modal.addEventListener("click", function (e) { if (e.target.closest("[data-close]")) closeModal(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
+
   try { input.value = localStorage.getItem(STORE) || ""; } catch (e) {}
   update(false);
 
