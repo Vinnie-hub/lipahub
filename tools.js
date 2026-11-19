@@ -2,6 +2,8 @@
   "use strict";
   var BASE = "https://lipahub.vercel.app/";
   var STORE = "lipahub-tools-username";
+  var STORE_WA = "lipahub-tools-wa";
+  var DEFAULT_WA = "254707995729"; /* default support number; used unless the person enters their own */
   var root = document.documentElement;
   var $ = function (s) { return document.querySelector(s); };
 
@@ -21,7 +23,25 @@
   /* Generator */
   var input = $("#refInput"), hint = $("#refHint"), box = $("#linkBox"),
       copyBtn = $("#copyBtn"), waBtn = $("#waBtn"), status = $("#copyStatus"), statusTimer;
+  var waInput = $("#waInput"), waHint = $("#waHint");
   var current = "";
+
+  /* Turn what the person typed into digits-only international format.
+     Kenyan local formats (0712…, 712…) get 254; "+" or "00" means the country code is already there. */
+  function normalizeWa(raw) {
+    var t = String(raw || "").trim();
+    if (!t) return { empty: true, num: "" };
+    var intl = /^(\+|00)/.test(t);
+    var d = t.replace(/\D/g, "");
+    if (/^00/.test(d)) d = d.slice(2);
+    if (!intl) {
+      if (/^0[17]\d{8}$/.test(d)) d = "254" + d.slice(1);
+      else if (/^[17]\d{8}$/.test(d)) d = "254" + d;
+    }
+    var ok = /^\d{10,15}$/.test(d) && (d.indexOf("254") !== 0 || d.length === 12);
+    return { empty: false, valid: ok, num: ok ? d : "" };
+  }
+  function prettyWa(n) { return "+" + n.replace(/^(254)(\d{3})(\d{3})(\d{3})$/, "$1 $2 $3 $4"); }
 
   function setStatus(msg) {
     status.textContent = msg;
@@ -36,6 +56,22 @@
     hint.classList.toggle("warn", !!showWarn);
     hint.textContent = showWarn ? "Only letters, numbers, dots, dashes and underscores are allowed." : "";
     current = cleaned;
+
+    var w = normalizeWa(waInput.value);
+    setSupportNumber(w.valid ? w.num : DEFAULT_WA);
+    waHint.classList.remove("warn", "ok");
+    if (w.empty) {
+      waHint.textContent = "The number will be used as a customer support contact";
+    } else if (!w.valid) {
+      waHint.classList.add("warn");
+      waHint.textContent = "Not applied yet \u2014 enter a full WhatsApp number, e.g. 0712 345 678 or +254712345678.";
+    } else if (w.num === DEFAULT_WA) {
+      waHint.textContent = "That is already the default support number.";
+    } else {
+      waHint.classList.add("ok");
+      waHint.textContent = "Support links will open WhatsApp at " + prettyWa(w.num) + ".";
+    }
+
     if (current) {
       var link = BASE + "?ref=" + encodeURIComponent(current);
       box.textContent = link;
@@ -55,6 +91,12 @@
       waBtn.removeAttribute("href");
     }
   }
+
+  function saveWa() { try { localStorage.setItem(STORE_WA, waInput.value.trim()); } catch (e) {} }
+  waInput.addEventListener("input", function () {
+    waInput.value = waInput.value.replace(/[^\d+\s()-]/g, "");
+    update(false); saveWa();
+  });
 
   input.addEventListener("input", function () {
     var before = input.value.trim().replace(/^@+/, "");
@@ -88,7 +130,7 @@
   });
 
   /* WhatsApp assistance */
-  var WA_NUMBER = "254707995729";
+  var WA_NUMBER = DEFAULT_WA;
   var WA_MESSAGES = {
     website:
       "Hello, I'm interested in website development services and would like to discuss my project.",
@@ -98,10 +140,16 @@
   };
   var assistBtn = $("#assistBtn"), modal = $("#assistModal");
   var options = modal.querySelectorAll(".assist-option");
+  function setSupportNumber(num) {
+    WA_NUMBER = num || DEFAULT_WA;
+    Array.prototype.forEach.call(options, function (a) {
+      a.href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(WA_MESSAGES[a.getAttribute("data-service")]);
+    });
+  }
   Array.prototype.forEach.call(options, function (a) {
-    a.href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(WA_MESSAGES[a.getAttribute("data-service")]);
     a.addEventListener("click", function () { setTimeout(closeModal, 150); });
   });
+  setSupportNumber(DEFAULT_WA);
   function openModal() {
     modal.hidden = false;
     document.body.style.overflow = "hidden";
@@ -122,7 +170,7 @@
   modal.addEventListener("click", function (e) { if (e.target.closest("[data-close]")) closeModal(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
 
-  try { input.value = localStorage.getItem(STORE) || ""; } catch (e) {}
+  try { input.value = localStorage.getItem(STORE) || ""; waInput.value = localStorage.getItem(STORE_WA) || ""; } catch (e) {}
   update(false);
 
   var y = $("#year"); if (y) y.textContent = new Date().getFullYear();

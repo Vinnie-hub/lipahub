@@ -1,4 +1,4 @@
-const CACHE = "lipahub-v2";
+const CACHE = "lipahub-v3";
 // Every entry must exist, otherwise cache.addAll() rejects and the worker never installs.
 // "./" and "/tools" are used (not index.html / tools.html) because Vercel redirects the .html URLs.
 const CORE = ["./", "/tools", "style.css", "script.js", "manifest.json", "tools.css", "tools.js", "assets/lipahub-logo.webp", "assets/icon-192.png"];

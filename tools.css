@@ -10,7 +10,10 @@
 .field{width:100%;padding:15px 18px 15px 48px;border-radius:16px;border:1.5px solid var(--card-brd);background:var(--section-invert);color:var(--text-strong);font:inherit;font-size:1rem;transition:border-color .2s,box-shadow .2s}
 .field::placeholder{color:var(--muted)}
 .field:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(45,212,191,.18)}
-.field-hint{min-height:1.4em;margin-top:8px;font-size:.85rem;color:var(--muted)}
+.field-hint{min-height:1.4em;margin-top:8px;margin-bottom:6px;font-size:.85rem;color:var(--muted)}
+.field-hint.ok{color:var(--accent)}
+.field-label .optional{font-weight:500;color:var(--muted);font-size:.85rem}
+.field-wrap .fa-whatsapp{color:#25d366}
 .field-hint.warn{color:var(--accent-3)}
 .result{margin-top:22px}
 .result-label{font-size:.78rem;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:var(--accent);margin-bottom:8px}
