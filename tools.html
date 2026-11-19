@@ -77,11 +77,14 @@
           </div>
           <p class="field-hint" id="refHint" role="status" aria-live="polite"></p>
 
-          <label class="field-label" for="waInput">Your WhatsApp support number <span class="optional">(optional)</span></label>
-          <div class="field-wrap">
-            <i class="fab fa-whatsapp" aria-hidden="true"></i>
-            <input class="field" id="waInput" type="tel" inputmode="tel" autocomplete="tel" autocorrect="off"
-                   spellcheck="false" maxlength="20" placeholder="e.g. 0712 345 678 or +254712345678" aria-describedby="waHint" />
+          <label class="field-label" for="waInput">Your WhatsApp number <span class="optional">(optional)</span></label>
+          <div class="phone-row">
+            <select class="field select" id="ccSelect" aria-label="Country code"></select>
+            <div class="field-wrap">
+              <i class="fab fa-whatsapp" aria-hidden="true"></i>
+              <input class="field" id="waInput" type="tel" inputmode="tel" autocomplete="tel-national" autocorrect="off"
+                     spellcheck="false" maxlength="22" placeholder="e.g. 0712 345 678" aria-describedby="waHint" />
+            </div>
           </div>
           <p class="field-hint" id="waHint" role="status" aria-live="polite"></p>
 
@@ -92,13 +95,17 @@
               <button class="btn btn-solid" id="copyBtn" type="button" disabled><i class="fas fa-copy"></i> Copy Link</button>
               <a class="btn btn-wa is-disabled" id="waBtn" aria-disabled="true"><i class="fab fa-whatsapp"></i> Share on WhatsApp</a>
             </div>
+            <div class="alt-link" id="altLink" hidden>
+              <p class="result-label">Link without your number</p>
+              <div class="alt-row">
+                <div class="link-box alt-box" id="altBox"></div>
+                <button class="btn btn-outline" id="altCopyBtn" type="button" aria-label="Copy link without number"><i class="fas fa-copy"></i></button>
+              </div>
+            </div>
             <p class="copy-status" id="copyStatus" role="status" aria-live="polite"></p>
           </div>
 
-          <p class="tools-note">
-            When someone opens your link, the website remembers your username and sends every
-            registration button to <code>lipahub.com/register.php?ref=your-username</code>.
-          </p>
+          <p class="tools-note">Your link shares your username on registration buttons and your phone number on WhatsApp support links.</p>
         </section>
       </div>
     </main>
@@ -128,7 +135,7 @@
         </button>
       </div>
       <button class="channelBtn float" id="assistBtn" type="button" aria-haspopup="dialog" aria-controls="assistModal"
-              aria-label="Chat on WhatsApp: choose a topic"></button>
+              aria-label="Chat on WhatsApp: choose a topic"><i class="fab fa-whatsapp" aria-hidden="true"></i></button>
     </div>
     <script src="/tools.js"></script>
   </body>

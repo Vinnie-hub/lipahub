@@ -3,6 +3,7 @@
   var BASE = "https://lipahub.vercel.app/";
   var STORE = "lipahub-tools-username";
   var STORE_WA = "lipahub-tools-wa";
+  var STORE_CC = "lipahub-tools-cc";
   var DEFAULT_WA = "254707995729"; /* default support number; used unless the person enters their own */
   var root = document.documentElement;
   var $ = function (s) { return document.querySelector(s); };
@@ -20,28 +21,64 @@
   setTheme(root.classList.contains("light-mode"), false);
   toggle.addEventListener("click", function () { setTheme(!root.classList.contains("light-mode"), true); });
 
-  /* Generator */
+  /* Countries: [ISO, name, dial code, keepLeadingZero]. Africa first; keepLeadingZero = the 0 is part of the number. */
+  var AFRICA = [
+    ["DZ","Algeria","213"],["AO","Angola","244"],["BJ","Benin","229",1],["BW","Botswana","267"],["BF","Burkina Faso","226"],
+    ["BI","Burundi","257"],["CM","Cameroon","237"],["CV","Cape Verde","238"],["CF","Central African Rep.","236"],["TD","Chad","235"],
+    ["KM","Comoros","269"],["CG","Congo","242"],["CD","DR Congo","243"],["CI","C\u00f4te d'Ivoire","225",1],["DJ","Djibouti","253"],
+    ["EG","Egypt","20"],["GQ","Equatorial Guinea","240"],["ER","Eritrea","291"],["SZ","Eswatini","268"],["ET","Ethiopia","251"],
+    ["GA","Gabon","241"],["GM","Gambia","220"],["GH","Ghana","233"],["GN","Guinea","224"],["GW","Guinea-Bissau","245"],
+    ["KE","Kenya","254"],["LS","Lesotho","266"],["LR","Liberia","231"],["LY","Libya","218"],["MG","Madagascar","261"],
+    ["MW","Malawi","265"],["ML","Mali","223"],["MR","Mauritania","222"],["MU","Mauritius","230"],["MA","Morocco","212"],
+    ["MZ","Mozambique","258"],["NA","Namibia","264"],["NE","Niger","227"],["NG","Nigeria","234"],["RW","Rwanda","250"],
+    ["ST","S\u00e3o Tom\u00e9 & Pr\u00edncipe","239"],["SN","Senegal","221"],["SC","Seychelles","248"],["SL","Sierra Leone","232"],
+    ["SO","Somalia","252"],["ZA","South Africa","27"],["SS","South Sudan","211"],["SD","Sudan","249"],["TZ","Tanzania","255"],
+    ["TG","Togo","228"],["TN","Tunisia","216"],["UG","Uganda","256"],["ZM","Zambia","260"],["ZW","Zimbabwe","263"]
+  ];
+  var OTHER = [
+    ["AE","United Arab Emirates","971"],["AU","Australia","61"],["CA","Canada","1"],["CN","China","86"],["FR","France","33"],
+    ["DE","Germany","49"],["IN","India","91"],["IT","Italy","39",1],["NL","Netherlands","31"],["QA","Qatar","974"],
+    ["SA","Saudi Arabia","966"],["GB","United Kingdom","44"],["US","United States","1"]
+  ];
+  var DEFAULT_CC = "KE";
+  var BY_ISO = {};
+  AFRICA.concat(OTHER).forEach(function (c) { BY_ISO[c[0]] = { iso: c[0], name: c[1], code: c[2], keep: !!c[3] }; });
+
   var input = $("#refInput"), hint = $("#refHint"), box = $("#linkBox"),
       copyBtn = $("#copyBtn"), waBtn = $("#waBtn"), status = $("#copyStatus"), statusTimer;
-  var waInput = $("#waInput"), waHint = $("#waHint");
+  var waInput = $("#waInput"), waHint = $("#waHint"), ccSelect = $("#ccSelect");
+  var altWrap = $("#altLink"), altBox = $("#altBox"), altCopyBtn = $("#altCopyBtn");
   var current = "";
 
-  /* Turn what the person typed into digits-only international format.
-     Kenyan local formats (0712…, 712…) get 254; "+" or "00" means the country code is already there. */
-  function normalizeWa(raw) {
+  function addOptions(parent, list) {
+    list.forEach(function (c) {
+      var o = document.createElement("option"); o.value = c[0]; o.textContent = c[1] + " (+" + c[2] + ")"; parent.appendChild(o);
+    });
+  }
+  addOptions(ccSelect, AFRICA);
+  var otherGroup = document.createElement("optgroup"); otherGroup.label = "Other countries";
+  addOptions(otherGroup, OTHER); ccSelect.appendChild(otherGroup);
+  ccSelect.value = DEFAULT_CC;
+
+  /* Digits-only international number. "+" or "00" = code already included; otherwise the selected country's code
+     is added (a leading 0 is dropped, and a pasted number that already starts with the code is kept as is). */
+  function parseWa(raw, c) {
     var t = String(raw || "").trim();
     if (!t) return { empty: true, num: "" };
-    var intl = /^(\+|00)/.test(t);
-    var d = t.replace(/\D/g, "");
-    if (/^00/.test(d)) d = d.slice(2);
-    if (!intl) {
-      if (/^0[17]\d{8}$/.test(d)) d = "254" + d.slice(1);
-      else if (/^[17]\d{8}$/.test(d)) d = "254" + d;
-    }
-    var ok = /^\d{10,15}$/.test(d) && (d.indexOf("254") !== 0 || d.length === 12);
+    var intl = /^(\+|00)/.test(t), d = t.replace(/\D/g, "");
+    if (intl) d = d.replace(/^00/, "");
+    else if (d.indexOf(c.code) === 0 && d.length - c.code.length >= 7) { /* already has the code */ }
+    else { if (!c.keep) d = d.replace(/^0/, ""); d = c.code + d; }
+    var ok = /^[1-9]\d{7,14}$/.test(d) && (d.indexOf("254") !== 0 || d.length === 12);
     return { empty: false, valid: ok, num: ok ? d : "" };
   }
-  function prettyWa(n) { return "+" + n.replace(/^(254)(\d{3})(\d{3})(\d{3})$/, "$1 $2 $3 $4"); }
+  function prettyWa(n) { return "+" + n.replace(/(\d{3})(?=\d)/g, "$1 ").trim(); }
+
+  /* Coded form of the number for the link: base36 + 1 check character. Decoded in script.js. */
+  function encodeWa(d) {
+    var n = BigInt(d);
+    return n.toString(36) + (n % BigInt(997) % BigInt(36)).toString(36);
+  }
 
   function setStatus(msg) {
     status.textContent = msg;
@@ -57,25 +94,26 @@
     hint.textContent = showWarn ? "Only letters, numbers, dots, dashes and underscores are allowed." : "";
     current = cleaned;
 
-    var w = normalizeWa(waInput.value);
+    var w = parseWa(waInput.value, BY_ISO[ccSelect.value]);
     setSupportNumber(w.valid ? w.num : DEFAULT_WA);
     waHint.classList.remove("warn", "ok");
     if (w.empty) {
-      waHint.textContent = "The number will be used as a customer support contact";
+      waHint.textContent = "Leave empty to get a link without a WhatsApp number.";
     } else if (!w.valid) {
       waHint.classList.add("warn");
-      waHint.textContent = "Not applied yet \u2014 enter a full WhatsApp number, e.g. 0712 345 678 or +254712345678.";
-    } else if (w.num === DEFAULT_WA) {
-      waHint.textContent = "That is already the default support number.";
+      waHint.textContent = "Not valid yet \u2014 check the number, or start with + and the country code.";
     } else {
       waHint.classList.add("ok");
-      waHint.textContent = "Support links will open WhatsApp at " + prettyWa(w.num) + ".";
+      waHint.textContent = "Your link will open WhatsApp at " + prettyWa(w.num) + ".";
     }
 
     if (current) {
-      var link = BASE + "?ref=" + encodeURIComponent(current);
+      var plain = BASE + "?ref=" + encodeURIComponent(current);
+      var link = w.valid ? plain + "&c=" + encodeWa(w.num) : plain;
       box.textContent = link;
       box.classList.remove("is-empty");
+      altWrap.hidden = !w.valid;
+      altBox.textContent = plain;
       copyBtn.disabled = false;
       waBtn.classList.remove("is-disabled");
       waBtn.removeAttribute("aria-disabled");
@@ -85,6 +123,7 @@
     } else {
       box.textContent = "Enter your username above to generate your link";
       box.classList.add("is-empty");
+      altWrap.hidden = true;
       copyBtn.disabled = true;
       waBtn.classList.add("is-disabled");
       waBtn.setAttribute("aria-disabled", "true");
@@ -92,11 +131,12 @@
     }
   }
 
-  function saveWa() { try { localStorage.setItem(STORE_WA, waInput.value.trim()); } catch (e) {} }
+  function saveWa() { try { localStorage.setItem(STORE_WA, waInput.value.trim()); localStorage.setItem(STORE_CC, ccSelect.value); } catch (e) {} }
   waInput.addEventListener("input", function () {
     waInput.value = waInput.value.replace(/[^\d+\s()-]/g, "");
     update(false); saveWa();
   });
+  ccSelect.addEventListener("change", function () { update(false); saveWa(); });
 
   input.addEventListener("input", function () {
     var before = input.value.trim().replace(/^@+/, "");
@@ -115,14 +155,14 @@
     return ok;
   }
 
-  copyBtn.addEventListener("click", function () {
-    if (!current) return;
-    var link = box.textContent;
-    function done(ok) { setStatus(ok ? "Link copied to clipboard!" : "Couldn't copy automatically — please select and copy the link."); }
+  function copyText(link) {
+    function done(ok) { setStatus(ok ? "Link copied to clipboard!" : "Couldn't copy automatically \u2014 please select and copy the link."); }
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(link).then(function () { done(true); }, function () { done(fallbackCopy(link)); });
     } else { done(fallbackCopy(link)); }
-  });
+  }
+  copyBtn.addEventListener("click", function () { if (current) copyText(box.textContent); });
+  altCopyBtn.addEventListener("click", function () { if (current) copyText(altBox.textContent); });
 
   waBtn.addEventListener("click", function (e) {
     if (!current) { e.preventDefault(); return; }
@@ -170,7 +210,10 @@
   modal.addEventListener("click", function (e) { if (e.target.closest("[data-close]")) closeModal(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
 
-  try { input.value = localStorage.getItem(STORE) || ""; waInput.value = localStorage.getItem(STORE_WA) || ""; } catch (e) {}
+  try {
+    input.value = localStorage.getItem(STORE) || ""; waInput.value = localStorage.getItem(STORE_WA) || "";
+    var cc = localStorage.getItem(STORE_CC); if (cc && BY_ISO[cc]) ccSelect.value = cc;
+  } catch (e) {}
   update(false);
 
   var y = $("#year"); if (y) y.textContent = new Date().getFullYear();

@@ -4,17 +4,33 @@
   root.classList.add("js");
 
   /* ---------- Referral capture ----------
-     Priority: ?ref= in the URL  >  last saved ref  >  "sydney".
-     Every registration link is rewritten to carry the captured username. */
+     ?ref=bob            -> referrer username
+     ?ref=bob&c=k7x9q2   -> also an encoded WhatsApp number, used for the support/WhatsApp links.
+     Priority: URL  >  last saved  >  default ("sydney" and the default support number).
+     A new ?ref= without &c= clears any number saved from a previous referrer. */
   (function () {
-    var DEFAULT_REF = "sydney", KEY = "lipahub-ref";
+    var DEFAULT_REF = "sydney", KEY = "lipahub-ref", KEY_C = "lipahub-c";
     function clean(v) { v = String(v || "").trim().replace(/^@+/, ""); return /^[A-Za-z0-9._-]{1,40}$/.test(v) ? v : ""; }
-    var ref = "";
-    try { ref = clean(new URLSearchParams(window.location.search).get("ref")); } catch (e) {}
+    /* base36 number + 1 check character -> digits-only international number, or "" if invalid */
+    function decode(c) {
+      c = String(c || "").trim().toLowerCase();
+      if (!/^[0-9a-z]{5,14}$/.test(c) || typeof BigInt !== "function") return "";
+      try {
+        var body = c.slice(0, -1), n = BigInt(0), i;
+        for (i = 0; i < body.length; i++) n = n * BigInt(36) + BigInt(parseInt(body[i], 36));
+        if ((n % BigInt(997) % BigInt(36)).toString(36) !== c.slice(-1)) return "";
+        var d = n.toString();
+        return /^[1-9]\d{7,14}$/.test(d) ? d : "";
+      } catch (e) { return ""; }
+    }
+    var qs, urlRef = "", urlC = "", ref = "", wa = "";
+    try { qs = new URLSearchParams(window.location.search); urlRef = clean(qs.get("ref")); urlC = decode(qs.get("c")); } catch (e) {}
     try {
-      if (ref) localStorage.setItem(KEY, ref);
+      if (urlRef) { localStorage.setItem(KEY, urlRef); ref = urlRef; if (!urlC) localStorage.removeItem(KEY_C); }
       else ref = clean(localStorage.getItem(KEY));
-    } catch (e) {}
+      if (urlC) { localStorage.setItem(KEY_C, urlC); wa = urlC; }
+      else if (!urlRef) wa = decode(localStorage.getItem(KEY_C));
+    } catch (e) { ref = ref || urlRef; wa = wa || urlC; }
     if (!ref) ref = DEFAULT_REF;
     var links = document.querySelectorAll('a[href^="https://lipahub.com/register.php"]');
     for (var i = 0; i < links.length; i++) {
@@ -23,6 +39,10 @@
         u.searchParams.set("ref", ref);
         links[i].setAttribute("href", u.toString());
       } catch (e) {}
+    }
+    if (wa) {
+      var wl = document.querySelectorAll("a[data-support-wa]");
+      for (var j = 0; j < wl.length; j++) wl[j].setAttribute("href", "https://wa.me/" + wa);
     }
   })();
 

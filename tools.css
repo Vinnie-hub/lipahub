@@ -15,6 +15,13 @@
 .field-label .optional{font-weight:500;color:var(--muted);font-size:.85rem}
 .field-wrap .fa-whatsapp{color:#25d366}
 .field-hint.warn{color:var(--accent-3)}
+.phone-row{display:flex;gap:10px}
+.phone-row .field-wrap{flex:1 1 auto;min-width:0}
+.field.select{flex:0 0 auto;width:min(46%,230px);padding:15px 12px;cursor:pointer;text-overflow:ellipsis}
+.alt-link{margin-top:18px}
+.alt-row{display:flex;gap:10px;align-items:stretch}
+.alt-box{min-height:0;padding:12px 14px;font-size:.85rem;flex:1 1 auto}
+.alt-row .btn{flex:0 0 auto;padding:0 18px}
 .result{margin-top:22px}
 .result-label{font-size:.78rem;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:var(--accent);margin-bottom:8px}
 .link-box{display:block;width:100%;padding:16px 18px;border-radius:16px;border:1.5px dashed var(--accent);background:var(--section-invert);color:var(--text-strong);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.95rem;word-break:break-all;overflow-wrap:anywhere;min-height:56px}
@@ -33,6 +40,9 @@
 /* Floating WhatsApp button (reuses .float-wa-container / .channelBtn.float from style.css) */
 .tools-fab{right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom))}
 .tools-fab button.channelBtn{cursor:pointer;font:inherit}
+.tools-fab .channelBtn.float::before{display:none}
+.tools-fab .channelBtn.float i{font-size:34px;line-height:1;color:#fff}
+@media(max-width:560px){.tools-fab .channelBtn.float i{font-size:30px}}
 .tools-fab{flex-direction:column;align-items:flex-end;gap:12px}
 .fab-preview{position:relative;width:min(300px,calc(100vw - 32px));background:var(--bg);border:1px solid var(--card-brd);border-left:4px solid #25d366;border-radius:18px;box-shadow:var(--shadow);animation:assistIn .25s ease}
 .fab-preview[hidden]{display:none}
@@ -62,6 +72,8 @@
   .assist-sheet{max-width:none;border-radius:24px 24px 0 0;padding-bottom:max(22px,env(safe-area-inset-bottom))}
 }
 @media(max-width:560px){
+  .phone-row{flex-direction:column}
+  .field.select{width:100%}
   .tools-main{padding:32px 0 48px}
   .tools-card{padding:26px 20px;border-radius:22px}
   .actions{flex-direction:column}
