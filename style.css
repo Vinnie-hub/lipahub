@@ -126,19 +126,19 @@ h2{font-size:clamp(1.7rem,3.6vw,2.4rem);line-height:1.2;letter-spacing:-.5px}
 .bonus-highlight p{flex:1;font-weight:500;color:var(--text-strong)}
 .bonus-highlight span{color:var(--accent);font-weight:800}
 
-/* Partner cards */
-.partner-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:46px}
-.partner-card{display:flex;flex-direction:column;align-items:flex-start;background:var(--card);padding:34px 28px;border-radius:28px;
+/* opportunity cards */
+.opportunity-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:46px}
+.opportunity-card{display:flex;flex-direction:column;align-items:flex-start;background:var(--card);padding:34px 28px;border-radius:28px;
   border:1px solid var(--card-brd);box-shadow:var(--shadow);transition:.3s;position:relative;overflow:hidden}
-.partner-card::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--grad);opacity:0;transition:opacity .3s}
-.partner-card:hover{transform:translateY(-8px);border-color:var(--accent)}
-.partner-card:hover::before{opacity:1}
-.partner-icon{width:62px;height:62px;border-radius:18px;display:grid;place-items:center;font-size:1.6rem;color:#fff;margin-bottom:20px}
-.partner-icon.gold{background:linear-gradient(135deg,#f59e0b,#fbbf24)}
-.partner-icon.purple{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
-.partner-icon.green{background:linear-gradient(135deg,#059669,#34d399)}
-.partner-card h3{font-size:1.3rem;margin-bottom:10px}
-.partner-card p{color:var(--muted-strong);margin-bottom:24px;flex:1}
+.opportunity-card::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--grad);opacity:0;transition:opacity .3s}
+.opportunity-card:hover{transform:translateY(-8px);border-color:var(--accent)}
+.opportunity-card:hover::before{opacity:1}
+.opportunity-icon{width:62px;height:62px;border-radius:18px;display:grid;place-items:center;font-size:1.6rem;color:#fff;margin-bottom:20px}
+.opportunity-icon.gold{background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+.opportunity-icon.purple{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+.opportunity-icon.green{background:linear-gradient(135deg,#059669,#34d399)}
+.opportunity-card h3{font-size:1.3rem;margin-bottom:10px}
+.opportunity-card p{color:var(--muted-strong);margin-bottom:24px;flex:1}
 
 /* More ways */
 .earn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;margin-top:44px}
@@ -267,7 +267,7 @@ h2{font-size:clamp(1.7rem,3.6vw,2.4rem);line-height:1.2;letter-spacing:-.5px}
   .hero-media{max-width:620px;margin-inline:auto}
   .steps-grid{grid-template-columns:1fr 1fr}
   .info-trio{grid-template-columns:1fr}
-  .partner-grid{grid-template-columns:1fr;max-width:520px;margin-inline:auto}
+  .opportunity-grid{grid-template-columns:1fr;max-width:520px;margin-inline:auto}
   .footer-grid{grid-template-columns:1fr 1fr}
   .footer-brand{grid-column:1/-1}
 }
